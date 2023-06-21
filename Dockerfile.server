@@ -1,0 +1,14 @@
+# Use nginx as the base image
+FROM nginx
+
+# Copy the index.html file to the default location
+COPY index.html /usr/share/nginx/html
+
+# Set the hostname to example.com
+RUN echo "example.com" > /etc/hostname
+
+# Expose port 80 for internal communication
+EXPOSE 80
+
+# Start nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]

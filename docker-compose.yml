@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  server:
+    # Build the server image from the Dockerfile.server
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    # Set the network alias to example.com
+    networks:
+      default:
+        aliases:
+          - example.com
+
+  fake:
+    # Build the fake image from the Dockerfile.fake
+    build:
+      context: .
+      dockerfile: Dockerfile.fake
+    # Set the network alias to fake.com
+    networks:
+      default:
+        aliases:
+          - fake.com
+
+  client:
+    # Build the client image from the Dockerfile.client
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    # Depend on the server and fake services
+    depends_on:
+      - server
+      - fake
+    # Expose port 53 for DNS queries
+    expose:
+      - 53
+
+networks:
+  default:
+    # Use a bridge network driver
+    driver: bridge

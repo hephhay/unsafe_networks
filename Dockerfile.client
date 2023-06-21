@@ -1,0 +1,14 @@
+# Use alpine as the base image
+FROM alpine
+
+# Install curl and python3
+RUN apk add --no-cache curl python3
+
+# Copy the dns_poison.py file to the image
+COPY dns_poison.py /dns_poison.py
+
+# Set the environment variable for the server address
+ENV SERVER_ADDR example.com
+
+# Run the dns_poison.py script in the background and then run a curl command to get the html document from the server
+CMD python3 /dns_poison.py & curl http://$SERVER_ADDR
